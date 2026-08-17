@@ -153,13 +153,26 @@ export function isNoShow(map, id) {
 
 // 접속 통계 핑 URL — 저장소 릴리스(visit-counter)의 작은 첨부 파일 주소.
 // 이 파일을 받아가면 GitHub이 다운로드 횟수를 +1 세고, 관리 페이지가 그 수를 읽는다.
-// GitHub Pages(*.github.io)에서만 주소를 만들 수 있고 그 외(localhost 등)는 null.
-export function visitPingURL(kind, loc = location) {
-  const m = String(loc.hostname || "").match(/^([^.]+)\.github\.io$/i);
-  if (!m) return null;
-  const seg = String(loc.pathname || "").split("/").filter(Boolean);
-  const repo = seg.length && !seg[0].includes(".") ? seg[0] : `${m[1]}.github.io`;
-  return `https://github.com/${m[1]}/${repo}/releases/download/visit-counter/visit-${kind}.bin`;
+// - 기본 Pages 주소(*.github.io): hostname/경로에서 owner/repo를 유추.
+// - 커스텀 도메인(예: class.robertson.kr): 호스트로 저장소를 알 수 없으므로,
+//   발행 시 meta.repo에 기록해 둔 owner/name을 사용한다.
+// - 로컬 개발(localhost/127.*)에서는 집계하지 않는다(null).
+export function visitPingURL(kind, meta = null, loc = location) {
+  const host = String(loc.hostname || "");
+  if (!host || host === "localhost" || host === "[::1]" || /^127\./.test(host)) return null;
+  let owner, repo;
+  const m = host.match(/^([^.]+)\.github\.io$/i);
+  if (m) {
+    owner = m[1];
+    const seg = String(loc.pathname || "").split("/").filter(Boolean);
+    repo = seg.length && !seg[0].includes(".") ? seg[0] : `${m[1]}.github.io`;
+  } else if (meta?.repo?.owner && meta?.repo?.name) {
+    owner = meta.repo.owner;
+    repo = meta.repo.name;
+  } else {
+    return null;
+  }
+  return `https://github.com/${owner}/${repo}/releases/download/visit-counter/visit-${kind}.bin`;
 }
 
 // 카톡 공유용 숙제 목록 텍스트 (관리자/학생 공용)
