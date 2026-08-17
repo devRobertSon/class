@@ -175,7 +175,7 @@ function logout() {
 function pingVisit(kind) {
   try {
     if (sessionStorage.getItem(`${STORE_NS}:visit-pinged`)) return;
-    const url = visitPingURL(kind);
+    const url = visitPingURL(kind, meta);
     if (!url) return; // localhost 등 — 집계하지 않음
     sessionStorage.setItem(`${STORE_NS}:visit-pinged`, "1");
     fetch(url, { mode: "no-cors", cache: "no-store" }).catch(() => {});

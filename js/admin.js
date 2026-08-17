@@ -2652,6 +2652,11 @@ async function buildPublishFiles(mode) {
   S.meta.students = S.roster.students.map((s) => s.fileId);
   S.meta.academies = S.roster.academies.map((a) => a.fileId);
   S.meta.teachers = (S.roster.teachers || []).map((t) => t.fileId);
+  // 저장소 정보(공개, 비밀 아님) — 커스텀 도메인에서 접속 통계 핑 URL을 만들 때 사용.
+  // github.io 주소에서는 호스트로 유추하지만, 커스텀 도메인은 호스트로 알 수 없어 여기 기록한다.
+  if (S.roster.repo?.owner && S.roster.repo?.name) {
+    S.meta.repo = { owner: S.roster.repo.owner, name: S.roster.repo.name };
+  }
   S.meta.publishedAt = new Date().toISOString();
   S.ownPublishedAts.add(S.meta.publishedAt); // 이 세션의 발행(ZIP 포함)은 충돌 경고 대상이 아님
 
