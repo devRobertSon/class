@@ -26,10 +26,11 @@
 2. **Build and deployment → Source**를 `Deploy from a branch`로 두고,
    **Branch**를 `main` / `/ (root)`로 선택 후 **Save**.
 3. 1~2분 뒤 `https://<사용자명>.github.io/<저장소이름>/` 주소가 생깁니다.
+   > 이 포털은 커스텀 도메인 **`https://class.robertson.kr/`** 로도 접속됩니다(설정 방법은 아래 ⑦). 학생·학부모에게는 이 주소를 안내하세요.
 
 ### ② 관리 페이지 접속
 
-`https://<사용자명>.github.io/<저장소이름>/admin.html` 을 엽니다.
+`https://class.robertson.kr/admin.html` (또는 `https://<사용자명>.github.io/<저장소이름>/admin.html`) 을 엽니다.
 (관리 페이지 주소는 학생에게 알려줘도 마스터 비밀번호 없이는 아무것도 볼 수 없지만, 알릴 필요는 없습니다.)
 
 ### ③ 초기 설정 마법사
@@ -86,6 +87,25 @@ GitHub 밖으로는 아무 정보도 나가지 않습니다.** 한 번만 설정
 4. 이후 그 학원 학생 포털에 **질문·문의 탭**이 생깁니다. 접수된 질문은 폼의
    응답 화면(또는 연결한 구글 시트)에서 확인하고, 여러 학생에게 유용한 답변은
    **공지사항으로 게시**하세요. 주소를 비워서 저장·발행하면 탭이 사라집니다.
+
+### ⑦ (설정됨) 커스텀 도메인 — `https://class.robertson.kr/`
+
+이 포털은 GitHub Pages 기본 주소(`<사용자명>.github.io/<저장소이름>/`) 대신
+**`class.robertson.kr`** 커스텀 도메인으로 접속하도록 설정되어 있습니다.
+
+- **학생 포털**: `https://class.robertson.kr/` · **관리 페이지**: `https://class.robertson.kr/admin.html`
+- 학생·학부모·코드 카드에는 이 주소를 안내하세요(기존 github.io 주소도 계속 동작합니다).
+
+설정 구성(이미 되어 있음, 참고용):
+
+1. 저장소 루트의 **`CNAME`** 파일에 도메인(`class.robertson.kr`)이 들어 있습니다.
+2. GitHub **Settings → Pages → Custom domain** 에 `class.robertson.kr` 등록,
+   DNS 확인 후 **Enforce HTTPS** 체크.
+3. 도메인 관리(DNS)에서 `class` 서브도메인의 **CNAME 레코드 → `<사용자명>.github.io`** 를 추가.
+
+> ⚠️ 루트의 **`CNAME` 파일이 지워지면 커스텀 도메인 연결이 풀립니다.**
+> 관리 페이지의 발행은 `data/` 폴더만 건드리므로 `CNAME`은 그대로 유지됩니다.
+> 만약 실수로 지워졌다면, 저장소 루트에 `CNAME`(내용 한 줄: `class.robertson.kr`)을 다시 추가하세요.
 
 ---
 
